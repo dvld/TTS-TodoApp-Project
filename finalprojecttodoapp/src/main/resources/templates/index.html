@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.com/">
+
+<head th:replace="fragments/head :: head">
+  <title>Quick Todo App</title>
+</head>
+
+<body>
+
+  <nav th:replace="fragments/navbar :: nav"></nav>
+
+  <div class="container mt-5">
+
+    <div class="row">
+
+      <div class="col-md-12">
+
+
+        <div class="list-group">
+
+          <a th:if="${todo.status == false}" th:each="todo:${todos}" class="list-group-item list-group-item-action">
+            <div class="row">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1" th:text="${todo.title}"></h5>
+                <!-- <small th:text="${todo.pointValue}" class="badge badge-primary badge-pill"></small> -->
+              </div>
+              <p th:text="${todo.description}" class="mb-1"></p>
+            </div>
+            <div class="row">
+              <form th:action="@{'/delete/{id}' (id=${todo.id})}" th:method="delete">
+                <button class="btn btn-danger" type="submit">Delete</button>
+              </form>
+              <form th:action="@{'/update/{id}' (id=${todo.id})}" th:method="get">
+                <button class="btn btn-warning" type="submit">Update</button>
+              </form>
+              <form th:action="@{'/complete/{id}' (id=${todo.id})}" th:method="put">
+                <button class="btn btn-info" type="submit">Complete</button>
+              </form>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  <div class="row" th:if="${!#lists.isEmpty(finished)}">
+    <h2>Completed</h2>
+  </div>
+
+  <div class="row">
+
+    <div class="list-group">
+
+      <a th:if="${todo.status == true}" th:each="todo:${finished}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1" th:text="${todo.title}" style="text-decoration: line-through;"></h5>
+
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  <div th:replace="fragments/head :: scripts"></div>
+</body>
+
+</html>
